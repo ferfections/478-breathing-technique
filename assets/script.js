@@ -1,26 +1,23 @@
-const textElement = document.getElementById('text');
-const totalTime = 19000; // 19 segundos en milisegundos
-const breatheTime = 4000; // 4 segundos
-const holdTime = 7000;    // 7 segundos
+const textElement = document.getElementById('instruction-text');
+const totalTime = 19000; // 19s
+const breatheTime = 4000; // 4s
+const holdTime = 7000;    // 7s
 
 function breathAnimation() {
-    // 1. Fase de Inspirar (4s)
-    textElement.innerText = 'INSPIRA';
+    textElement.innerText = 'Inspira';
 
-    // 2. Fase de Mantener (7s)
     setTimeout(() => {
-        textElement.innerText = 'MANTÉN';
+        textElement.innerText = 'Mantén';
 
-        // 3. Fase de Exhalar (8s)
         setTimeout(() => {
-            textElement.innerText = 'EXPULSA';
+            textElement.innerText = 'Expulsa';
         }, holdTime);
 
     }, breatheTime);
 }
 
-// Iniciar la primera vez
+// Inicia inmediatamente
 breathAnimation();
 
-// Repetir el ciclo cada 19 segundos
+// Repite cada 19 segundos
 setInterval(breathAnimation, totalTime);
