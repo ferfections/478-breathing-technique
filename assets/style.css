@@ -174,37 +174,3 @@ footer {
         /* Se hace fino */
     }
 }
-
-/* Actualizamos el estilo del texto */
-/* Estilo del texto */
-#instruction-text {
-    z-index: 2;
-    font-size: 2.5rem;
-    font-weight: 300;
-    color: #fff;
-
-    /* Esta línea es importante para que el cambio de luz sea suave */
-    will-change: opacity, text-shadow;
-
-    /* Animación de 1 segundo (Luz) */
-    animation: light-pulse 1s ease-in-out infinite;
-}
-
-/* El efecto de "Pulso de Luz" */
-@keyframes light-pulse {
-
-    0%,
-    100% {
-        /* Estado "apagado" (pero legible) */
-        opacity: 0.6;
-        text-shadow: 0 0 0 rgba(255, 255, 255, 0);
-    }
-
-    50% {
-        /* Estado "encendido" (brillo máximo) */
-        opacity: 0.5;
-        /* Esto crea el halo de luz alrededor de las letras */
-        text-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
-            0 0 10px rgba(255, 255, 255, 0.5);
-    }
-}
