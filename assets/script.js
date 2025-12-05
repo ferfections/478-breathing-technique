@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
             textElement.innerText = 'Mantén';
 
             setTimeout(() => {
-                textElement.innerText = 'Expulsa';
+                textElement.innerText = 'Suelta';
             }, holdTime);
 
         }, breatheTime);
