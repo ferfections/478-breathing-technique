@@ -1,24 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // --- PARTE 1: LA RESPIRACIÓN ---
+    /* ------------------------------------------------
+       PARTE 1: LA RESPIRACIÓN
+    ------------------------------------------------ */
     const textElement = document.getElementById('instruction-text');
-
-    // Tiempos en milisegundos (Total 19s)
     const totalTime = 19000;
-    const breatheTime = 4000; // 4s Inspirar
-    const holdTime = 7000;    // 7s Mantener
+    const breatheTime = 4000;
+    const holdTime = 7000;
 
     function breathAnimation() {
-        if (!textElement) return; // Seguridad por si no encuentra el texto
+        if (!textElement) return;
 
-        // 1. Fase INSPIRA
         textElement.innerText = 'Inspira';
+        textElement.style.animation = "light-pulse 1s ease-in-out infinite"; // Aseguramos animación
 
-        // 2. Fase MANTÉN
         setTimeout(() => {
             textElement.innerText = 'Mantén';
 
-            // 3. Fase EXPULSA
             setTimeout(() => {
                 textElement.innerText = 'Expulsa';
             }, holdTime);
@@ -26,43 +24,66 @@ document.addEventListener("DOMContentLoaded", () => {
         }, breatheTime);
     }
 
-    // Iniciamos la animación si existe el elemento
     if (textElement) {
         breathAnimation();
         setInterval(breathAnimation, totalTime);
     }
 
-    // --- PARTE 2: EL MENÚ DE AJUSTES ---
-
-    // Buscamos los elementos en el HTML por su ID
+    /* ------------------------------------------------
+       PARTE 2: EL MENÚ DE AJUSTES
+    ------------------------------------------------ */
     const settingsBtn = document.getElementById('settings-btn');
     const closeBtn = document.getElementById('close-btn');
     const modal = document.getElementById('settings-modal');
 
-    // Verificar si el botón existe antes de añadirle el evento
     if (settingsBtn && modal) {
-        // Al hacer clic en el engranaje, añadimos la clase 'open'
         settingsBtn.addEventListener('click', () => {
-            console.log("Botón ajustes pulsado"); // Esto saldrá en la consola (F12)
             modal.classList.add('open');
         });
-    } else {
-        console.error("Error: No encuentro el botón 'settings-btn' o el modal 'settings-modal' en el HTML");
     }
 
-    // Botón de cerrar (X)
     if (closeBtn && modal) {
         closeBtn.addEventListener('click', () => {
             modal.classList.remove('open');
         });
     }
 
-    // Cerrar haciendo clic fuera (en el fondo oscuro)
     if (modal) {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 modal.classList.remove('open');
             }
         });
+    }
+
+    /* ------------------------------------------------
+       PARTE 3: MODO OSCURO (EL INTERRUPTOR)
+    ------------------------------------------------ */
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    if (themeToggleBtn) {
+        // Cargar preferencia guardada
+        const savedTheme = localStorage.getItem('zen478-theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggleBtn.classList.add('active');
+        }
+
+        // Al hacer clic
+        themeToggleBtn.addEventListener('click', () => {
+            console.log("¡Interruptor pulsado!"); // MIRA LA CONSOLA SI ESTO SALE
+
+            // 1. Cambiar clase al body
+            document.body.classList.toggle('dark-mode');
+
+            // 2. Mover la bolita del interruptor
+            themeToggleBtn.classList.toggle('active');
+
+            // 3. Guardar en memoria
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('zen478-theme', isDark ? 'dark' : 'light');
+        });
+    } else {
+        console.error("ERROR: No encuentro el elemento con id 'theme-toggle' en el HTML");
     }
 });

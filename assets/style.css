@@ -293,3 +293,73 @@ footer {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+/* --- ESTILOS DEL INTERRUPTOR (SWITCH) --- */
+.toggle-switch {
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 20px;
+    position: relative;
+    transition: background-color 0.3s;
+}
+
+.toggle-knob {
+    width: 16px;
+    height: 16px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Transición suave para toda la web al cambiar de tema */
+body {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* --- MODO OSCURO (PALETA "DEEP FOREST") --- */
+
+/* Cuando el interruptor está activo visualmente */
+.option-item.active .toggle-switch {
+    background-color: var(--circle-breath);
+    /* Verde */
+}
+
+.option-item.active .toggle-knob {
+    transform: translateX(20px);
+    /* Movemos la bolita a la derecha */
+}
+
+/* Redefinición de variables cuando el modo oscuro está activo */
+body.dark-mode {
+    /* Fondo: Verde carbón muy oscuro (Casi negro, pero orgánico) */
+    --bg-color: #15201D;
+
+    /* Círculo central: Jade oscuro */
+    --circle-core: #2D403A;
+
+    /* Círculo que respira: Salvia apagada (menos brillante que de día) */
+    --circle-breath: #4A6B60;
+
+    /* Texto principal: Blanco hueso (no blanco puro para no deslumbrar) */
+    --text-main: #E8F3F1;
+
+    /* Texto secundario: Gris verdoso */
+    --text-light: #8B9E99;
+}
+
+/* Ajuste especial para el modal en modo oscuro */
+body.dark-mode .modal-content {
+    background-color: #1E2B28;
+    /* Tarjeta oscura */
+    color: var(--text-main);
+}
+
+body.dark-mode .option-item {
+    background-color: #253330;
+    /* Fondo de las opciones más oscuro */
+}
