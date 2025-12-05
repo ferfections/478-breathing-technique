@@ -39,3 +39,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// --- LÓGICA DEL MENÚ ---
+
+const settingsBtn = document.getElementById('settings-btn');
+const closeBtn = document.getElementById('close-btn');
+const modal = document.getElementById('settings-modal');
+
+// Abrir menú
+if (settingsBtn) {
+    settingsBtn.addEventListener('click', () => {
+        modal.classList.add('open');
+    });
+}
+
+// Cerrar menú con la X
+if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+        modal.classList.remove('open');
+    });
+}
+
+// Cerrar menú si haces clic fuera de la tarjeta (en el fondo oscuro)
+if (modal) {
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('open');
+        }
+    });
+}
+
