@@ -1,8 +1,7 @@
-// Esperamos a que todo el HTML esté cargado antes de arrancar
 document.addEventListener("DOMContentLoaded", () => {
 
+    // --- PARTE 1: LA RESPIRACIÓN ---
     const textElement = document.getElementById('instruction-text');
-    const circleElement = document.querySelector('.circle-moving');
 
     // Tiempos en milisegundos (Total 19s)
     const totalTime = 19000;
@@ -10,17 +9,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const holdTime = 7000;    // 7s Mantener
 
     function breathAnimation() {
-        console.log("Ciclo iniciado"); // Esto aparecerá en la consola si funciona
+        if (!textElement) return; // Seguridad por si no encuentra el texto
 
-        // 1. Fase INSPIRA (Dura 4s)
+        // 1. Fase INSPIRA
         textElement.innerText = 'Inspira';
-        textElement.style.opacity = "1"; // Nos aseguramos que se vea
 
-        // 2. Fase MANTÉN (Dura 7s)
+        // 2. Fase MANTÉN
         setTimeout(() => {
             textElement.innerText = 'Mantén';
 
-            // 3. Fase EXPULSA (Dura 8s)
+            // 3. Fase EXPULSA
             setTimeout(() => {
                 textElement.innerText = 'Expulsa';
             }, holdTime);
@@ -28,43 +26,43 @@ document.addEventListener("DOMContentLoaded", () => {
         }, breatheTime);
     }
 
-    // Comprobamos si encontró el elemento de texto
+    // Iniciamos la animación si existe el elemento
     if (textElement) {
-        // Iniciamos la primera vez
         breathAnimation();
-        // Repetimos el ciclo infinitamente
         setInterval(breathAnimation, totalTime);
+    }
+
+    // --- PARTE 2: EL MENÚ DE AJUSTES ---
+
+    // Buscamos los elementos en el HTML por su ID
+    const settingsBtn = document.getElementById('settings-btn');
+    const closeBtn = document.getElementById('close-btn');
+    const modal = document.getElementById('settings-modal');
+
+    // Verificar si el botón existe antes de añadirle el evento
+    if (settingsBtn && modal) {
+        // Al hacer clic en el engranaje, añadimos la clase 'open'
+        settingsBtn.addEventListener('click', () => {
+            console.log("Botón ajustes pulsado"); // Esto saldrá en la consola (F12)
+            modal.classList.add('open');
+        });
     } else {
-        console.error("No he encontrado el elemento con id 'instruction-text'");
+        console.error("Error: No encuentro el botón 'settings-btn' o el modal 'settings-modal' en el HTML");
+    }
+
+    // Botón de cerrar (X)
+    if (closeBtn && modal) {
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('open');
+        });
+    }
+
+    // Cerrar haciendo clic fuera (en el fondo oscuro)
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('open');
+            }
+        });
     }
 });
-
-// --- LÓGICA DEL MENÚ ---
-
-const settingsBtn = document.getElementById('settings-btn');
-const closeBtn = document.getElementById('close-btn');
-const modal = document.getElementById('settings-modal');
-
-// Abrir menú
-if (settingsBtn) {
-    settingsBtn.addEventListener('click', () => {
-        modal.classList.add('open');
-    });
-}
-
-// Cerrar menú con la X
-if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
-        modal.classList.remove('open');
-    });
-}
-
-// Cerrar menú si haces clic fuera de la tarjeta (en el fondo oscuro)
-if (modal) {
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.remove('open');
-        }
-    });
-}
-
