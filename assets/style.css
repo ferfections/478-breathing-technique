@@ -133,3 +133,78 @@ footer {
 
     /* Expulsar (se encoge) */
 }
+
+/* El anillo del latido (CORREGIDO) */
+.pulse-ring {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+
+    /* CAMBIO: Usamos el verde oscuro en lugar de blanco para que se vea */
+    border: 4px solid var(--text-light);
+
+    /* CAMBIO: z-index -1 lo escondía detrás del fondo. 
+       Lo ponemos en 0 para que esté detrás del círculo pero delante del fondo */
+    z-index: 0;
+
+    /* Animación de 1 segundo (metrónomo) */
+    animation: ripple-beat 1s infinite;
+
+    /* Para que no interfiera con el ratón */
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+/* Animación de la onda */
+@keyframes ripple-beat {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+        /* Empieza visible */
+        border-width: 4px;
+    }
+
+    100% {
+        transform: scale(1.4);
+        /* Crece bastante para salir del círculo */
+        opacity: 0;
+        /* Desaparece */
+        border-width: 0px;
+        /* Se hace fino */
+    }
+}
+
+/* Actualizamos el estilo del texto */
+/* Estilo del texto */
+#instruction-text {
+    z-index: 2;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: #fff;
+
+    /* Esta línea es importante para que el cambio de luz sea suave */
+    will-change: opacity, text-shadow;
+
+    /* Animación de 1 segundo (Luz) */
+    animation: light-pulse 1s ease-in-out infinite;
+}
+
+/* El efecto de "Pulso de Luz" */
+@keyframes light-pulse {
+
+    0%,
+    100% {
+        /* Estado "apagado" (pero legible) */
+        opacity: 0.6;
+        text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    }
+
+    50% {
+        /* Estado "encendido" (brillo máximo) */
+        opacity: 0.5;
+        /* Esto crea el halo de luz alrededor de las letras */
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+            0 0 10px rgba(255, 255, 255, 0.5);
+    }
+}
