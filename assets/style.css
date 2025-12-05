@@ -1,0 +1,85 @@
+body {
+    background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* 2. El Círculo de Respiración */
+.circle-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle {
+    background-color: rgba(255, 255, 255, 0.2);
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 1;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+
+    animation: breathe-animation 19s ease-in-out infinite;
+}
+
+.gradient-circle {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #74ebd5 0%, #9face6 100%);
+    z-index: 2;
+    position: absolute;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+#text {
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    z-index: 3;
+    text-align: center;
+    pointer-events: none;
+    /* Permite clicks a través del texto */
+}
+
+.instruction {
+    margin-top: 40px;
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+@keyframes breathe-animation {
+    0% {
+        transform: scale(1);
+    }
+
+    21% {
+        transform: scale(1.4);
+    }
+
+    58% {
+        transform: scale(1.4);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
