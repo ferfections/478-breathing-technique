@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -12,68 +12,65 @@
 </head>
 
 <body>
-    <script src="assets/script.js"></script>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <button id="settings-btn" class="icon-btn" aria-label="Abrir ajustes">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+            </path>
+        </svg>
+    </button>
+
+    <div id="settings-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ajustes</h2>
+                <button id="close-btn" class="icon-btn close">&times;</button>
+            </div>
+            <div class="options-grid">
+                <div id="theme-toggle" class="option-item" style="cursor: pointer;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>🌙 Tema Oscuro</span>
+                    </div>
+                    <div class="toggle-switch">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                <div class="option-item disabled">
+                    <span>🎵 Sonidos (Próx.)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <header>
         <h1 class="logo">Zen478</h1>
     </header>
 
     <main class="container">
-
         <div class="breathing-visualizer">
-            <!-- <div class="pulse-ring"></div> -->
+
+            <svg class="progress-ring" width="400" height="400">
+                <circle class="progress-ring-circle" stroke-width="4" fill="transparent" r="190" cx="200" cy="200" />
+            </svg>
 
             <div class="circle-bg"></div>
             <div class="circle-moving"></div>
+
             <p id="instruction-text">Listo...</p>
         </div>
-
-        <button id="settings-btn" class="icon-btn" aria-label="Abrir ajustes">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path
-                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
-                </path>
-            </svg>
-        </button>
-
-        <div id="settings-modal" class="modal-overlay">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Ajustes</h2>
-                    <button id="close-btn" class="icon-btn close">&times;</button>
-                </div>
-
-                <div class="options-grid">
-                    <div class="option-item disabled">
-                        <span>🎵 Sonidos</span>
-                        <small>Próximamente</small>
-                    </div>
-
-                    <div class="option-item disabled">
-                        <span>⏱️ Temporizador</span>
-                        <small>Próximamente</small>
-                    </div>
-
-                    <div id="theme-toggle" class="option-item" style="cursor: pointer;">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <span>🌙 Tema Oscuro</span>
-                        </div>
-                        <div class="toggle-switch">
-                            <div class="toggle-knob"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <p class="sub-instruction">Sigue el ritmo del círculo</p>
-
+        <p class="sub-instruction">Sigue el ritmo de las partículas</p>
     </main>
 
     <footer>
         <p>Tómate un momento para ti.</p>
     </footer>
+
+    <script src="assets/script.js"></script>
 </body>
 
 </html>

@@ -1,13 +1,15 @@
-/* Variables de Color (Paleta Relax) */
+/* VARIABLES (Paleta Relax) */
 :root {
-    --bg-color: #f1ece1;
+    --bg-color: #F0F4F3;
+    /* Fondo claro */
     --circle-core: #A4C3B2;
-    --circle-breath: #567568;
+    --circle-breath: #6B9080;
     --text-main: #354F52;
+    /* Color oscuro principal */
     --text-light: #52796F;
 }
 
-/* Reset básico */
+/* RESET */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -22,9 +24,24 @@ body {
     flex-direction: column;
     min-height: 100vh;
     overflow: hidden;
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-/* Header */
+/* CANVAS DE PARTÍCULAS */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    /* Detrás de todo */
+    pointer-events: none;
+    opacity: 0.6;
+    /* Transparencia global de las partículas */
+}
+
+/* HEADER & FOOTER */
 header {
     padding: 2rem;
     text-align: center;
@@ -41,7 +58,15 @@ header {
     opacity: 0.7;
 }
 
-/* Main Container */
+footer {
+    padding: 1.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    opacity: 0.6;
+}
+
+/* CONTAINER */
 .container {
     flex: 1;
     display: flex;
@@ -49,9 +74,9 @@ header {
     justify-content: center;
     align-items: center;
     position: relative;
+    z-index: 1;
 }
 
-/* El Visualizador */
 .breathing-visualizer {
     position: relative;
     width: 300px;
@@ -61,7 +86,7 @@ header {
     align-items: center;
 }
 
-/* Círculo estático (Centro) */
+/* CÍRCULOS */
 .circle-bg {
     position: absolute;
     width: 250px;
@@ -72,7 +97,6 @@ header {
     opacity: 0.3;
 }
 
-/* Círculo dinámico (Animación) */
 .circle-moving {
     position: absolute;
     width: 250px;
@@ -82,17 +106,24 @@ header {
     z-index: 0;
     opacity: 0.6;
     box-shadow: 0 0 60px rgba(107, 144, 128, 0.4);
-
     animation: breathe-cycle 19s ease-in-out infinite;
 }
 
+/* TEXTO */
 #instruction-text {
     z-index: 2;
     font-size: 2.5rem;
     font-weight: 300;
     color: #fff;
-    /* Blanco sobre el círculo verde */
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    will-change: opacity, text-shadow;
+    animation: light-pulse 2s ease-in-out infinite;
+}
+
+.fade-out {
+    opacity: 0 !important;
 }
 
 .sub-instruction {
@@ -102,16 +133,35 @@ header {
     letter-spacing: 1px;
 }
 
-/* Footer */
-footer {
-    padding: 1.5rem;
-    text-align: center;
-    font-size: 0.8rem;
-    color: var(--text-light);
-    opacity: 0.6;
+/* ANILLO DE PROGRESO (SVG) - CORREGIDO */
+.progress-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    z-index: 5;
+    pointer-events: none;
 }
 
-/* Keyframes (Misma lógica matemática, diseño más suave) */
+.progress-ring-circle {
+    stroke-dasharray: 1194 2500;
+    /* Truco del hueco gigante */
+    stroke-dashoffset: 1194;
+    stroke: var(--text-main);
+    opacity: 0.6;
+    transition: none;
+}
+
+.progress-ring.active .progress-ring-circle {
+    animation: countdown 7s linear forwards;
+}
+
+.progress-ring.exiting .progress-ring-circle {
+    stroke-dashoffset: 0 !important;
+    animation: ring-fade-out 0.5s ease-out forwards;
+}
+
+/* ANIMACIONES */
 @keyframes breathe-cycle {
     0% {
         transform: scale(1);
@@ -121,78 +171,74 @@ footer {
         transform: scale(1.5);
     }
 
-    /* Inspirar (crece) */
     58% {
         transform: scale(1.5);
     }
 
-    /* Mantener (se queda) */
     100% {
         transform: scale(1);
     }
-
-    /* Expulsar (se encoge) */
 }
 
-/* El anillo del latido (CORREGIDO) */
-.pulse-ring {
-    position: absolute;
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
+@keyframes light-pulse {
 
-    /* CAMBIO: Usamos el verde oscuro en lugar de blanco para que se vea */
-    border: 4px solid var(--text-light);
+    0%,
+    100% {
+        text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    }
 
-    /* CAMBIO: z-index -1 lo escondía detrás del fondo. 
-       Lo ponemos en 0 para que esté detrás del círculo pero delante del fondo */
-    z-index: 0;
-
-    /* Animación de 1 segundo (metrónomo) */
-    animation: ripple-beat 1s infinite;
-
-    /* Para que no interfiera con el ratón */
-    pointer-events: none;
-    box-sizing: border-box;
+    50% {
+        text-shadow: 0 0 25px rgba(255, 255, 255, 0.6), 0 0 10px rgba(255, 255, 255, 0.4);
+    }
 }
 
-/* Animación de la onda */
-@keyframes ripple-beat {
-    0% {
-        transform: scale(1);
+@keyframes countdown {
+    from {
+        stroke-dashoffset: 1194;
+    }
+
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes ring-fade-out {
+    from {
         opacity: 0.6;
-        /* Empieza visible */
-        border-width: 4px;
     }
 
-    100% {
-        transform: scale(1.4);
-        /* Crece bastante para salir del círculo */
+    to {
         opacity: 0;
-        /* Desaparece */
-        border-width: 0px;
-        /* Se hace fino */
     }
 }
 
-/* --- ESTILOS DEL MENÚ DE AJUSTES --- */
+/* MODO OSCURO */
+body.dark-mode {
+    --bg-color: #15201D;
+    --circle-core: #2D403A;
+    --circle-breath: #4A6B60;
+    --text-main: #E8F3F1;
+    --text-light: #8B9E99;
+}
 
-/* Botón flotante (Engranaje) */
+/* MENÚ DE AJUSTES */
 .icon-btn {
     background: none;
     border: none;
     cursor: pointer;
     color: var(--text-main);
     opacity: 0.6;
-    transition: opacity 0.3s, transform 0.3s;
     padding: 10px;
-
-    /* Posicionamiento fijo arriba a la derecha */
     position: absolute;
     top: 20px;
     right: 20px;
     z-index: 100;
-    /* Siempre encima */
+    transition: 0.3s;
+}
+
+.icon-btn:hover {
+    opacity: 1;
+    transform: rotate(90deg);
 }
 
 .icon-btn svg {
@@ -200,108 +246,84 @@ footer {
     height: 30px;
 }
 
-.icon-btn:hover {
-    opacity: 1;
-    transform: rotate(90deg);
-    /* Efecto giro al pasar ratón */
-}
-
-/* El fondo oscuro detrás del modal */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(53, 79, 82, 0.4);
-    /* Fondo verdoso oscuro semi-transparente */
+    background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(5px);
-    /* Difumina lo de atrás */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 200;
-
-    /* Estado inicial: Oculto */
     opacity: 0;
     visibility: hidden;
     transition: all 0.4s ease;
 }
 
-/* Cuando añadimos la clase 'open' con JS, se muestra */
 .modal-overlay.open {
     opacity: 1;
     visibility: visible;
 }
 
-/* La tarjeta del menú */
 .modal-content {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     padding: 2rem;
     border-radius: 20px;
     width: 90%;
     max-width: 400px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     transform: translateY(20px);
     transition: transform 0.4s ease;
+}
+
+body.dark-mode .modal-content {
+    background-color: #1E2B28;
+    color: var(--text-main);
 }
 
 .modal-overlay.open .modal-content {
     transform: translateY(0);
 }
 
-/* Cabecera del modal */
 .modal-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-bottom: 2rem;
 }
 
-.modal-header h2 {
-    font-weight: 400;
-    color: var(--text-main);
-}
-
-/* Botón de cerrar (X) */
 .close {
     position: static;
-    /* Reseteamos la posición absoluta del botón genérico */
     font-size: 2rem;
-    line-height: 1;
     padding: 0;
 }
 
-/* Grid de opciones futuras */
-.options-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
+/* TOGGLE SWITCH */
 .option-item {
     padding: 1rem;
-    background-color: var(--bg-color);
+    background-color: rgba(0, 0, 0, 0.05);
     border-radius: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: var(--text-light);
+}
+
+body.dark-mode .option-item {
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .option-item.disabled {
     opacity: 0.5;
-    cursor: not-allowed;
 }
 
-/* --- ESTILOS DEL INTERRUPTOR (SWITCH) --- */
 .toggle-switch {
     width: 40px;
     height: 20px;
     background-color: #ccc;
     border-radius: 20px;
     position: relative;
-    transition: background-color 0.3s;
+    transition: 0.3s;
 }
 
 .toggle-knob {
@@ -312,54 +334,14 @@ footer {
     position: absolute;
     top: 2px;
     left: 2px;
-    transition: transform 0.3s;
+    transition: 0.3s;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Transición suave para toda la web al cambiar de tema */
-body {
-    transition: background-color 0.5s ease, color 0.5s ease;
-}
-
-/* --- MODO OSCURO (PALETA "DEEP FOREST") --- */
-
-/* Cuando el interruptor está activo visualmente */
 .option-item.active .toggle-switch {
     background-color: var(--circle-breath);
-    /* Verde */
 }
 
 .option-item.active .toggle-knob {
     transform: translateX(20px);
-    /* Movemos la bolita a la derecha */
-}
-
-/* Redefinición de variables cuando el modo oscuro está activo */
-body.dark-mode {
-    /* Fondo: Verde carbón muy oscuro (Casi negro, pero orgánico) */
-    --bg-color: #15201D;
-
-    /* Círculo central: Jade oscuro */
-    --circle-core: #2D403A;
-
-    /* Círculo que respira: Salvia apagada (menos brillante que de día) */
-    --circle-breath: #4A6B60;
-
-    /* Texto principal: Blanco hueso (no blanco puro para no deslumbrar) */
-    --text-main: #E8F3F1;
-
-    /* Texto secundario: Gris verdoso */
-    --text-light: #8B9E99;
-}
-
-/* Ajuste especial para el modal en modo oscuro */
-body.dark-mode .modal-content {
-    background-color: #1E2B28;
-    /* Tarjeta oscura */
-    color: var(--text-main);
-}
-
-body.dark-mode .option-item {
-    background-color: #253330;
-    /* Fondo de las opciones más oscuro */
 }
