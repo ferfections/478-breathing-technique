@@ -345,3 +345,120 @@ body.dark-mode .option-item {
 .option-item.active .toggle-knob {
     transform: translateX(20px);
 }
+
+/* =========================================
+   RESPONSIVE DESIGN (MÓVILES Y TABLETS)
+   ========================================= */
+
+/* 1. MÓVILES (Pantallas de menos de 768px de ancho) */
+@media screen and (max-width: 768px) {
+
+    /* Hacemos el visualizador un poco más pequeño para que quepa bien */
+    .breathing-visualizer {
+        width: 260px;
+        height: 260px;
+    }
+
+    /* Ajustamos los círculos internos */
+    .circle-bg,
+    .circle-moving {
+        width: 220px;
+        height: 220px;
+    }
+
+    /* Ajustamos el anillo de progreso SVG */
+    /* Originalmente era 400px, lo bajamos proporcionalmente */
+    .progress-ring {
+        width: 350px;
+        height: 350px;
+    }
+
+    /* Texto más pequeño para que no ocupe tanto */
+    #instruction-text {
+        font-size: 2rem;
+        /* Bajamos de 2.5rem a 2rem */
+    }
+
+    /* Subtítulo más pegado al círculo */
+    .sub-instruction {
+        margin-top: 2rem;
+        font-size: 0.9rem;
+    }
+
+    /* Ajuste del botón de ajustes para evitar el "notch" o marcos del móvil */
+    .icon-btn {
+        top: 15px;
+        right: 15px;
+        padding: 12px;
+        /* Área táctil más grande para el dedo */
+    }
+
+    /* Logo más discreto */
+    .logo {
+        font-size: 1rem;
+        letter-spacing: 2px;
+    }
+}
+
+/* 2. MÓVILES PEQUEÑOS (Pantallas muy estrechas, tipo iPhone SE antiguo) */
+@media screen and (max-width: 380px) {
+    .breathing-visualizer {
+        width: 220px;
+        height: 220px;
+    }
+
+    .circle-bg,
+    .circle-moving {
+        width: 190px;
+        height: 190px;
+    }
+
+    .progress-ring {
+        width: 300px;
+        height: 300px;
+    }
+
+    #instruction-text {
+        font-size: 1.8rem;
+    }
+}
+
+/* 3. MODO HORIZONTAL (LANDSCAPE)
+   Si giran el móvil, la altura es muy poca. Ocultamos cosas innecesarias. */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+
+    /* Ocultamos header y footer para dejar espacio al círculo */
+    header,
+    footer {
+        display: none;
+    }
+
+    /* Reducimos márgenes */
+    .container {
+        justify-content: center;
+        padding: 10px;
+    }
+
+    .sub-instruction {
+        display: none;
+        /* Ocultamos la instrucción secundaria */
+    }
+
+    .breathing-visualizer {
+        transform: scale(0.8);
+        /* Escalamos todo un poco hacia abajo */
+    }
+}
+
+/* 4. AJUSTE PARA EL MENÚ EN MÓVIL */
+@media screen and (max-width: 600px) {
+    .modal-content {
+        width: 85%;
+        /* Más ancho en móvil */
+        padding: 1.5rem;
+    }
+
+    .modal-header h2 {
+        font-size: 1.2rem;
+    }
+}
